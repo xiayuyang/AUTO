@@ -37,7 +37,7 @@ $ pip install -r requirements.txt
 ```shell
 $ python ./main/trainer/pdqn_multi_process.py
 ```
-4. Test the RL agent in the multi-lane scenario
+5. Test the RL agent in the multi-lane scenario
 ```shell
 $ python ./main/tester/multi_lane_test.py
 ```
