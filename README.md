@@ -82,8 +82,12 @@ $ python ./main/tester/multi_lane_test.py
 ![image](/figures/curve1.png)
 ![image](/figures/curve2.png)
 
-(a-b) Results in the multi-lane scenario;
-(c-d) Results in the crossing scenario.
+## Scenario Test
+### Lane Change Scenario
+![image](/figures/Lane_change.gif)
+
+### Traffic Light Scenario
+<iframe src="./figures/Traffic_light.mp4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 ## Reference
 
