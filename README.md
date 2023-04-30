@@ -81,7 +81,6 @@ $ python ./main/tester/multi_lane_test.py
 ## Training performance
 ![image](/figures/curve1.png)
 ![image](/figures/curve2.png)
-
 ## Scenario Test
 ### Lane Change Scenario
 
@@ -90,6 +89,19 @@ $ python ./main/tester/multi_lane_test.py
 ### Traffic Light Scenario
 
 <img src="./figures/Traffic_light.gif" width=500>
+
+## Scenario Setting
+### Highway Route
+
+<img src="./figures/Highway_route.png" width=400>
+
+### Urban Route
+
+<img src="./figures/Urban_route_1.png" width=400>
+<img src="./figures/Urban_route_2.png" width=400>
+<img src="./figures/Urban_route_3.png" width=400>
+<img src="./figures/Urban_route_4.png" width=400>
+<img src="./figures/Urban_route_5.png" width=400>
 
 ## Reference
 
