@@ -85,11 +85,11 @@ $ python ./main/tester/multi_lane_test.py
 ## Scenario Test
 ### Lane Change Scenario
 
-<img src="./figures/Lane_change.gif" width=700>
+<img src="./figures/Lane_change.gif" width=500>
 
 ### Traffic Light Scenario
 
-<img src="./figures/Traffic_light.gif" width=700>
+<img src="./figures/Traffic_light.gif" width=500>
 
 ## Reference
 
