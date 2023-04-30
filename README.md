@@ -84,11 +84,12 @@ $ python ./main/tester/multi_lane_test.py
 
 ## Scenario Test
 ### Lane Change Scenario
-![image](/figures/Lane_change.gif)
+
+<img src="./figures/Lane_change.gif" width=700>
 
 ### Traffic Light Scenario
 
-<video src="./figures/Traffic_light.mp4" controls loop></video>
+<img src="./figures/Traffic_light.gif" width=700>
 
 ## Reference
 
