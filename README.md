@@ -87,7 +87,8 @@ $ python ./main/tester/multi_lane_test.py
 ![image](/figures/Lane_change.gif)
 
 ### Traffic Light Scenario
-<iframe src="./figures/Traffic_light.mp4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<video src="./figures/Traffic_light.mp4" controls loop></video>
 
 ## Reference
 
