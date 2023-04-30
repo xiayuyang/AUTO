@@ -93,15 +93,13 @@ $ python ./main/tester/multi_lane_test.py
 ## Scenario Setting
 ### Highway Route
 
-<img src="./figures/Highway_route.png" width=400>
+<img src="./figures/Highway_route.png" width=370>
 
 ### Urban Route
 
-<img src="./figures/Urban_route_1.png" width=400>
-<img src="./figures/Urban_route_2.png" width=400>
-<img src="./figures/Urban_route_3.png" width=400>
-<img src="./figures/Urban_route_4.png" width=400>
-<img src="./figures/Urban_route_5.png" width=400>
+<img src="./figures/Urban_route_1.png" width=800>
+<img src="./figures/Urban_route_2.png" width=800>
+<img src="./figures/Urban_route_3.png" width=370>
 
 ## Reference
 
