@@ -39,7 +39,7 @@ Gym-like carla environment for vehicle agent controlled by reinforcement learnin
     - settings.py<br>
     This module contains environment parameter list for carla_env. For example,  
     the detection range $D_{tl}$ of traffic lights by the camera: $50𝑚$,  
-    the detection range $D_v of conventional vehicles by LiDAR: $70𝑚$,  
+    the detection range $D_v$ of conventional vehicles by LiDAR: $70𝑚$,  
     the number $n$ of waypoints observed by the autonomous vehicle: $10$,  
     the time interval $\Delta t$ between two decisions: $0.1𝑠$,  
     the TTC threshold $\mathcal{G}$ in the safety reward: $4𝑠$,  
