@@ -134,7 +134,7 @@ ARGS.add_argument(
     help='The number of look-ahead waypoints in each step')
 ARGS.add_argument(
     '--TTC_th', type=float,
-    default=4.001,
+    default=4,
     help='TTC threshold')
 ARGS.add_argument(
     '--penalty', type=float,

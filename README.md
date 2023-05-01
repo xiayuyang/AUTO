@@ -37,8 +37,14 @@ Gym-like carla environment for vehicle agent controlled by reinforcement learnin
     Main module for Gym-like Carla environment, which shares the same APIs as classical [Gym](https://gymnasium.farama.org/).
     Function "reset" is an initialization at the beginning of an episode and Function "step" includes state generation and reward calculation.
     - settings.py<br>
-    This module contains environment parameter list for carla_env. For example, the density of traffic flow, the threshold
-    of steering angle and accelerator brake rate, the maximum speed, and so on.
+    This module contains environment parameter list for carla_env. For example,  
+    the detection range of traffic lights by the camera: $50𝑚$,  
+    the detection range of conventional vehicles by LiDAR: $70𝑚$,  
+    the number 𝑛 of waypoints observed by the autonomous vehicle: $10$,  
+    the time interval between two decisions: $0.1𝑠$,  
+    the TTC threshold in the safety reward: $4𝑠$,  
+    the acceleration threshold in the comfort reward: $3𝑚/𝑠^2$,  
+    the velocity change threshold in the impact reward: $0.1𝑚/𝑠$, 
     - agent
         - basic_agent.py<br>
          BasicAgent implements an algorithm that navigates the scene.
@@ -73,15 +79,8 @@ Gym-like carla environment for vehicle agent controlled by reinforcement learnin
     Code for training our reinforcement learning model.  
     - process.py<br>
     Two functions that are used to start a process or kill a process. 
-    
-## Parameter setting
-the detection range of traffic lights by the camera: $50𝑚$,  
-the detection range of conventional vehicles by LiDAR: $70𝑚$,  
-the number 𝑛 of waypoints observed by the autonomous vehicle: $10$,  
-the time interval between two decisions: $0.1𝑠$,  
-the TTC threshold in the safety reward: $4𝑠$,  
-the acceleration threshold in the comfort reward: $3𝑚/𝑠^2$,  
-the velocity change threshold in the impact reward: $0.1𝑚/𝑠$,  
+
+ 
 
 ## Getting started
 1. Install and setup [the CARLA simulator (0.9.14)](https://carla.readthedocs.io/en/latest/start_quickstart/#a-debian-carla-installation), set the executable CARLA_PATH in gym_carla/setting.py
