@@ -38,13 +38,13 @@ Gym-like carla environment for vehicle agent controlled by reinforcement learnin
     Function "reset" is an initialization at the beginning of an episode and Function "step" includes state generation and reward calculation.
     - settings.py<br>
     This module contains environment parameter list for carla_env. For example,  
-    the detection range of traffic lights by the camera: $50𝑚$,  
-    the detection range of conventional vehicles by LiDAR: $70𝑚$,  
-    the number 𝑛 of waypoints observed by the autonomous vehicle: $10$,  
-    the time interval between two decisions: $0.1𝑠$,  
-    the TTC threshold in the safety reward: $4𝑠$,  
-    the acceleration threshold in the comfort reward: $3𝑚/𝑠^2$,  
-    the velocity change threshold in the impact reward: $0.1𝑚/𝑠$, 
+    the detection range $D_{tl}$ of traffic lights by the camera: $50𝑚$,  
+    the detection range $D_v of conventional vehicles by LiDAR: $70𝑚$,  
+    the number $n$ of waypoints observed by the autonomous vehicle: $10$,  
+    the time interval $\Delta t$ between two decisions: $0.1𝑠$,  
+    the TTC threshold $\mathcal{G}$ in the safety reward: $4𝑠$,  
+    the acceleration threshold $acc_{thr}$ in the comfort reward: $3𝑚/𝑠^2$,  
+    the velocity change threshold $vel_{thr}$ in the impact reward: $0.1𝑚/𝑠$, 
     - agent
         - basic_agent.py<br>
          BasicAgent implements an algorithm that navigates the scene.
