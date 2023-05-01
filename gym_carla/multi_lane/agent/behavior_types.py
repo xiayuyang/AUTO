@@ -1,4 +1,4 @@
-
+#
 class Cautious(object):
     """Class for Cautious agent."""
     max_speed = 40

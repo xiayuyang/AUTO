@@ -6,7 +6,7 @@ import random
 import numpy as np
 from gym_carla.multi_lane.settings import *
 from enum import Enum
-
+#
 def remove_unnecessary_objects(world):
     """Remove unuseful objects in the world"""
     def remove_object(world,objs,obj):

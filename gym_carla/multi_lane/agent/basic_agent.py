@@ -2,7 +2,7 @@ import carla
 from shapely.geometry import Polygon
 from gym_carla.multi_lane.agent.pid_controller import VehiclePIDController
 from gym_carla.multi_lane.util.misc import get_speed,is_within_distance,get_trafficlight_trigger_location,compute_distance
-
+#
 class BasicAgent(object):
     """
     BasicAgent implements an agent that navigates the scene.

@@ -9,7 +9,7 @@ from gym_carla.multi_lane.settings import ROADS, STRAIGHT, CURVE, JUNCTION, DOUB
 from gym_carla.multi_lane.util.misc import get_lane_center, get_speed, vector, compute_magnitude_angle, \
     is_within_distance_ahead, is_within_distance_rear, draw_waypoints, compute_distance, is_within_distance, test_waypoint,\
     get_trafficlight_trigger_location
-
+#
 class LocalPlanner:
     def __init__(self, vehicle, 
             opt_dict = {'sampling_resolution': 4.0,

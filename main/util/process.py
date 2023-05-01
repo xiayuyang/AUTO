@@ -12,7 +12,7 @@ def get_exec_command():
     exec_command=binary if operating_system=='windows' else ('./'+binary)
 
     return binary,exec_command
-
+#
 def kill_process():
     binary=get_binary()
     for process in psutil.process_iter():

@@ -1,6 +1,6 @@
 """This file defines all high level parameters of carla gym environment"""
 import argparse
-
+#
 # the following road id sets define the chosen route
 ROADS = set()
 DISTURB_ROADS = set()
@@ -99,6 +99,10 @@ ARGS.add_argument(
     '-sa', '--sampling_resolution', type=float,
     help='Distance between generated two waypoints',
     default=1.0)
+ARGS.add_argument(
+    '-we', '--weather', type=float,
+    help='weather setting',
+    default=sunlight)
 ARGS.add_argument(
     '--tm-port',
     metavar='P',

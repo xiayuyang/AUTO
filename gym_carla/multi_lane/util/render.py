@@ -9,7 +9,7 @@ import numpy as np
 from carla import ColorConverter as cc
 from gym_carla.multi_lane.util.sensor import GnssSensor,LaneInvasionSensor,CollisionSensor
 from gym_carla.multi_lane.util.misc import find_weather_presets,get_actor_display_name
-
+#
 
 class World(object):
     """ Class representing the surrounding environment """

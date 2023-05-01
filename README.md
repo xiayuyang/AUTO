@@ -12,50 +12,56 @@ This repo is the implementation of the following paper:
 
 ## Code Structure
 - algs<br>
-Implementaion for algorithims.
+    - pdqn<br>
+       Implementaion for our reinforcement learning algorithm, including lane-wised cross attention model (LCA), 
+       actor-critic model and hierarchical action. Class "lane_wise_cross_attention_encoder" is the LCA network,
+       Class "PolicyNet_multi" is the actor network, Class "QValueNet_multi" is the critic network.
+       Class P_DQN includes a whole workflow of reinforcement learning, including action section and gradient update.
+    - replay_buffer<br>
+       relay buffer of our reinforcement learning, which is used to store experiences and sample experiences.  
+       
 - gym_carla<br>
 Gym-like carla environment for vehicle agent controlled by reinforcement learning.
+    - carla_env.py<br>
+    Main module for Gym-like Carla environment, which shares the same APIs as classical [Gym](https://gymnasium.farama.org/).
+    Function "reset" is an initialization at the beginning of an episode and Function "step" includes state generation and reward calculation.
+    - settings.py<br>
+    This module contains environment parameter list for carla_env. For example, the density of traffic flow, the threshold
+    of steering angle and accelerator brake rate, the maximum speed, and so on.
     - agent
         - basic_agent.py<br>
-         BasicAgent implements an agent that navigates the scene.This agent respects traffic lights and other vehicles, but ignores stop signs.
+         BasicAgent implements an algorithm that navigates the scene.
         - basic_lane_change_agent.py<br>
-        Basic lane change model for vehicle agent controlled by rule.
-        - behavior_agent.py<br>
-        BehaviorAgent implements an agent that navigates scenes to reach a given
-        target destination, by computing the shortest possible path to it.
-        This agent can correctly follow traffic signs, speed limitations,
-        traffic lights, while also taking into account nearby vehicles. Lane changing
-        decisions can be taken by analyzing the surrounding environment such as tailgating avoidance.Adding to these are possible behaviors, the agent can also keep safety distance from a car in front of it by tracking the instantaneous time to collision and keeping it in a certain range. Finally, different sets of behaviors are encoded in the agent, from cautious to a more aggressive ones.
+        Basic lane-changing model for agent with several rules.
         - behavior_types.py<br>
-        This module contains the different parameters sets for each behavior. 
+        This module contains different parameters sets for each behavior. 
         - global_planner.py<br>
-        This module provides a very high level route plan, which set the global map route for vehicles.
-        - local_planner.py<br>
-        LocalPlanner implements the basic behavior of following a
-        trajectory of waypoints that is generated on-the-fly.<br>
-        The low-level motion of the vehicle is computed by using two PID controllers,
-        one is used for the lateral control and the other for the longitudinal control (cruise speed).<br>
-        When multiple paths are available (intersections) this local planner makes a random choice,unless a given global plan has already been specified.
+        This module provides a high level route plan, which set a global map route for each vehicle.
         - pid_controller.py<br>
         This module contains PID controllers to perform lateral and longitudinal control. 
     - util
         - misc.py<br>
-        This module contains auxiliary functions used in Carla.
+        This file contains auxiliary functions used in Carla. For example, a route calculation function, a distance calculation,
+         a waypoint selection function, and so on. 
         - render.py<br>
-        This module enables the rendering of front-eye camera view of ego vehicle in one pygame window. 
+        This enables the rendering of front-eye camera view of ego vehicle in one pygame window. 
+        - bridge_functions.py<br>
+        This file includes transfer functions for onboard sensors.  
+        - extended_kalman_filter<br>
+        This file implements the extended kalman_filter function.  
+        - geometric_functions.py<br>
+        This file implements the orientation transformation of vehicles.
         - sensor.py<br>
-        This module implement sensor-related functions and classes.
+        This file implements sensor-related functions and classes.
         - wrapper.py<br>
-        This module contains auxiliary functions and classes for carla_env.
-    - carla_env.py<br>
-    Main module for Gym-like Carla environment, which shares the same APIs as classical [Gym](https://gymnasium.farama.org/).
-    - settings.py<br>
-    This module contains environment parameter list for carla_env.
+        This file contains auxiliary functions and classes for carla_env. It includes specific state collection functions and reward calculation functions.
 - main
     - tester<br>
-    Code for testing model performance.
+    Code for testing our reinforcement learning model.
     - trainer<br>
-    Code for training reinforcement learning model.
+    Code for training our reinforcement learning model.  
+    - process.py<br>
+    Two functions that are used to start a process or kill a process. 
 ## Getting started
 1. Install and setup [the CARLA simulator (0.9.14)](https://carla.readthedocs.io/en/latest/start_quickstart/#a-debian-carla-installation), set the executable CARLA_PATH in gym_carla/setting.py
 
@@ -81,24 +87,14 @@ $ python ./main/tester/multi_lane_test.py
 ## Training performance
 ![image](/figures/curve1.png)
 ![image](/figures/curve2.png)
-## Scenario Test
-### Lane Change Scenario
+## a video example
 
 <img src="./figures/Lane_change.gif" width=500>
 
-### Traffic Light Scenario
 
-<img src="./figures/Traffic_light.gif" width=500>
-
-## Scenario Setting
-### Highway Route
+## some route examples
 
 <img src="./figures/Highway_route.png" width=400>
-
-### Urban Route
-
-<img src="./figures/Urban_route_1.png" width=800>
-<img src="./figures/Urban_route_2.png" width=800>
 <img src="./figures/Urban_route_3.png" width=400>
 
 ## Reference
