@@ -127,15 +127,35 @@ ARGS.add_argument(
 ARGS.add_argument(
     '--stride', type=int,
     default=10,
-    help='The number of upfront waypoints each state should include')
+    help='The number of waypoints observed by the autonomous vehicle')
 ARGS.add_argument(
-    '--buffer-size', type=int,
+    '--traffic_light_th', type=float,
     default=50,
-    help='The number of look-ahead waypoints in each step')
+    help='the detection range of traffic light')
+ARGS.add_argument(
+    '--vehicle_th', type=float,
+    default=70,
+    help='the detection range of conventional vehicles')
 ARGS.add_argument(
     '--TTC_th', type=float,
     default=4,
     help='TTC threshold')
+ARGS.add_argument(
+    '--acceleration threshold', type=float,
+    default=3,
+    help='acceleration threshold for ego vehicle')
+ARGS.add_argument(
+    '--speed threshold', type=float,
+    default=0.1,
+    help='speed threshold for ego vehicle')
+ARGS.add_argument(
+    '--traffic_light_th', type=float,
+    default=50,
+    help='the detection range of traffic light')
+ARGS.add_argument(
+    '--vehicle_th', type=float,
+    default=70,
+    help='the detection range of conventional vehicles')
 ARGS.add_argument(
     '--penalty', type=float,
     default=40,
@@ -148,6 +168,14 @@ ARGS.add_argument(
     '--lane_change_reward', type=float,
     default=25,
     help='reward for lane change according to the distance to the preceding vehicle')
+ARGS.add_argument(
+    '--acceleration threshold', type=float,
+    default=3,
+    help='acceleration threshold for ego vehicle')
+ARGS.add_argument(
+    '--speed threshold', type=float,
+    default=0.1,
+    help='speed threshold for ego vehicle')
 ARGS.add_argument(
     '--speed_limit', type=float,
     default=90.0,
