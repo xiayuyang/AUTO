@@ -4,8 +4,19 @@
 
 This repo is the implementation of the following paper:
 
-**AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving**
+**AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving**  
 
+The figure shows the architecture of our framework, which consists of five components: data preprocessing, state representation, actorcritic,
+hybrid reward function, and multi-worker training. For the data preprocessing,we first take the data from HD maps and multiple
+sensors (i.e., Camera, LiDAR, GNSS, and IMU) as input, based on which we respectively extract the feature vectors of lanes, vehicles,
+and traffic lights from it and finally generate a multi-modality state for the agent. For the state representation,we propose a lane-wised
+cross attention model (LCA) to learn a latent representation of the state features. It organizes as multiple agent-centric star graphs
+and applies cross attention to aggregate multi-modality features on each lane. Then, the aggregated results of each lane are fused as a
+state representation. For the actor-critic, we first introduce LCA for the actor and critic, respectively. Then, we compute an action 𝑎𝑡
+using a hierarchical action structure that first decides whether to perform a lane-changing decision (high level) and then compute an
+exact action to execute (low level). For the hybrid reward function, we calculate a reward value for action and state, which
+serves as a signal to guide the agent to learn an optimal action policy. For the multi-worker training, we speed up the training of actorcritic
+and improve the convergence performance using distributed computation.
 <br> 
 
 <br> 
