@@ -80,7 +80,7 @@ the detection range of conventional vehicles by LiDAR: $70𝑚$,
 the number 𝑛 of waypoints observed by the autonomous vehicle: $10$,  
 the time interval between two decisions: $0.1𝑠$,  
 the TTC threshold in the safety reward: $4𝑠$,  
-the acceleration threshold in the comfort reward: $3𝑚/𝑠2$,  
+the acceleration threshold in the comfort reward: $3𝑚/𝑠^2$,  
 the velocity change threshold in the impact reward: $0.1𝑚/𝑠$,  
 
 ## Getting started
