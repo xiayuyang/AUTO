@@ -111,16 +111,18 @@ $ python ./main/tester/multi_lane_test.py
 
 ## Training performance
 ![image](/figures/curve.PNG)
-## a video example
+## scenario example
 
 (bird-eye)
+
 <img src="./figures/Lane_change.gif" width=500>
 
 (driving)
+
 <img src="./figures/driving.png" width=500>
 
 
-## some route examples
+## route examples
 
 <img src="./figures/route.PNG" width=500>
 
