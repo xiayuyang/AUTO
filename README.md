@@ -1,4 +1,4 @@
-# AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving
+# AUTO : Parameterized Decision-making with Multi-modality Perception for Autonomous Driving
 
 ![image](/figures/frame.PNG)
 
@@ -112,10 +112,12 @@ $ python ./main/tester/multi_lane_test.py
 ## Training performance
 ![image](/figures/curve.PNG)
 ## a video example
+
 (bird-eye)
 <img src="./figures/Lane_change.gif" width=500>
+
 (driving)
-![image](/figures/driving.png)
+<img src="./figures/driving.png" width=500>
 
 
 ## some route examples
@@ -132,5 +134,5 @@ All code within this repository is under [Apache License 2.0](https://www.apache
 ## Acknowledgements
 Our code is based on several repositories:
 - [gym-carla](https://github.com/cjy1992/gym-carla.git)
-- [CARLA_Leaderboard](https://github.com/RobeSafe-UAH/CARLA_Leaderboard.git)
+- [TransFuser](https://github.com/autonomousvision/transfuser)
 - [MP-DQN](https://github.com/cycraig/MP-DQN.git)
