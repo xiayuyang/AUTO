@@ -122,8 +122,7 @@ $ python ./main/tester/multi_lane_test.py
 
 ## some route examples
 
-<img src="./figures/Highway_route.png" width=400>
-<img src="./figures/Urban_route_3.png" width=400>
+<img src="./figures/route.PNG" width=500>
 
 ## Reference
 
