@@ -1,3 +1,4 @@
+# setting parameters, like time duration and detection distance
 """This file defines all high level parameters of carla gym environment"""
 import argparse
 #

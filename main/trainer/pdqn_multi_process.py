@@ -1,3 +1,5 @@
+# multi processes, including multiple agents to collect data
+
 import logging
 import torch
 import datetime,time,os
