@@ -5,6 +5,7 @@
 This repo is the implementation of the following paper:
 
 **AUTO : Parameterized Decision-making with Multi-modality Perception for Autonomous Driving**  
+[论文](https://arxiv.org/abs/2312.11935)
 
 This figure shows the architecture of our framework, which consists of five components: data preprocessing, 
 state representation, parameterized action calculation, hybrid reward function, and multi-worker training. 
