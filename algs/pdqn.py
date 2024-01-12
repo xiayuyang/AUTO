@@ -1,14 +1,10 @@
-# reinforcement learning model
-
 import random, collections
 import numpy as np
-import torch, logging
+import torch,logging
 from torch import nn
 import torch.nn.functional as F
 from torch.autograd import Variable
-from algs.util.replay_buffer import SumTree, SplitReplayBuffer
-
-
+from algs.util.replay_buffer import SumTree,SplitReplayBuffer
 #
 
 class PriReplayBuffer(object):  # stored as ( s, a, r, s_ ) in SumTree
@@ -32,25 +28,24 @@ class PriReplayBuffer(object):  # stored as ( s, a, r, s_ ) in SumTree
         max_p = np.max(self.tree.tree[-self.tree.capacity:])
         if max_p == 0:
             max_p = self.abs_err_upper
-        self.tree.add(max_p, transition)  # set the max p for new p
+        self.tree.add(max_p, transition)   # set the max p for new p
 
     def sample(self, n):
-        # assert self.tree.size==self.tree.capacity
+        #assert self.tree.size==self.tree.capacity
         b_idx, ISWeights = np.empty((n,), dtype=np.int32), np.empty((n, 1))
-        b_state, b_action, b_action_param, b_reward, b_next_state, b_truncated, b_done, b_info = [], [], [], [], [], [], [], []
-        pri_seg = self.tree.total_p / n  # priority segment
+        b_state,b_action,b_action_param,b_reward,b_next_state,b_truncated,b_done,b_info=[],[],[],[],[],[],[],[]
+        pri_seg = self.tree.total_p / n       # priority segment
         self.beta = np.min([1., self.beta + self.beta_increment_per_sampling])  # max = 1
 
-        min_prob = np.min(
-            self.tree.tree[self.tree.capacity - 1:self.tree.capacity - 1 + self.size()]) / self.tree.total_p
-        # min_prob = np.min(self.tree.tree[-self.tree.capacity:]) / self.tree.total_p     # for later calculate ISweight
+        min_prob = np.min(self.tree.tree[self.tree.capacity-1:self.tree.capacity-1+self.size()]) / self.tree.total_p
+        #min_prob = np.min(self.tree.tree[-self.tree.capacity:]) / self.tree.total_p     # for later calculate ISweight
         for i in range(n):
             a, b = pri_seg * i, pri_seg * (i + 1)
-            v = np.random.uniform(a, b)  # sample from  [a, b)
+            v = np.random.uniform(a, b) #sample from  [a, b) 
             idx, p, data = self.tree.get_leaf(v)
             prob = p / self.tree.total_p
-            ISWeights[i, 0] = np.power(prob / min_prob, -self.beta)
-            b_idx[i] = idx
+            ISWeights[i, 0] = np.power(prob/min_prob, -self.beta)
+            b_idx[i]=idx
             b_state.append(data[0])
             b_action.append(data[1])
             b_action_param.append(data[2])
@@ -62,8 +57,7 @@ class PriReplayBuffer(object):  # stored as ( s, a, r, s_ ) in SumTree
 
         # print(self.tree.tree)
         # print(b_idx)
-        return b_idx, ISWeights, (
-        b_state, b_action, b_action_param, b_reward, b_next_state, b_truncated, b_done, b_info)
+        return b_idx, ISWeights, (b_state,b_action,b_action_param,b_reward,b_next_state,b_truncated,b_done,b_info)
 
     def batch_update(self, tree_idx, abs_errors):
         abs_errors += self.epsilon  # convert to abs and avoid 0
@@ -71,7 +65,7 @@ class PriReplayBuffer(object):  # stored as ( s, a, r, s_ ) in SumTree
         ps = np.power(clipped_errors, self.alpha)
         for ti, p in zip(tree_idx, ps):
             self.tree.update(ti, p)
-
+    
     def size(self):
         return self.tree.size
 
@@ -162,11 +156,11 @@ class PolicyNet_multi(torch.nn.Module):
         # state: (waypoints + 2 * companion_vehicle * 3
         one_state_dim = self.state_dim['waypoints'] + self.state_dim['companion_vehicle'] * 2 + self.state_dim['light']
         # print(state.shape, one_state_dim)
-        ego_info = state[:, 3 * one_state_dim:]
+        ego_info = state[:, 3*one_state_dim:]
         # print(ego_info.shape)
         left_enc = self.left_encoder(state[:, :one_state_dim], ego_info)
-        center_enc = self.center_encoder(state[:, one_state_dim:2 * one_state_dim], ego_info)
-        right_enc = self.right_encoder(state[:, 2 * one_state_dim:3 * one_state_dim], ego_info)
+        center_enc = self.center_encoder(state[:, one_state_dim:2*one_state_dim], ego_info)
+        right_enc = self.right_encoder(state[:, 2*one_state_dim:3*one_state_dim], ego_info)
         ego_enc = self.ego_encoder(ego_info)
         state_ = torch.cat((left_enc, center_enc, right_enc, ego_enc), dim=1)
         hidden = F.relu(self.fc(state_))
@@ -210,10 +204,10 @@ class QValueNet_multi(torch.nn.Module):
 
     def forward(self, state, action):
         one_state_dim = self.state_dim['waypoints'] + self.state_dim['companion_vehicle'] * 2 + self.state_dim['light']
-        ego_info = state[:, 3 * one_state_dim:]
+        ego_info = state[:, 3*one_state_dim:]
         left_enc = self.left_encoder(state[:, :one_state_dim], ego_info)
-        center_enc = self.center_encoder(state[:, one_state_dim:2 * one_state_dim], ego_info)
-        right_enc = self.right_encoder(state[:, 2 * one_state_dim:3 * one_state_dim], ego_info)
+        center_enc = self.center_encoder(state[:, one_state_dim:2*one_state_dim], ego_info)
+        right_enc = self.right_encoder(state[:, 2*one_state_dim:3*one_state_dim], ego_info)
         ego_enc = self.ego_encoder(ego_info)
         action_enc = self.action_encoder(action)
         state_ = torch.cat((left_enc, center_enc, right_enc, ego_enc, action_enc), dim=1)
@@ -252,11 +246,11 @@ class QValueNet_multi_td3(torch.nn.Module):
 
     def forward(self, state, action):
         one_state_dim = self.state_dim['waypoints'] + self.state_dim['companion_vehicle'] * 2 + self.state_dim['light']
-        ego_info = state[:, 3 * one_state_dim:]
+        ego_info = state[:, 3*one_state_dim:]
 
         left_enc = self.left_encoder(state[:, :one_state_dim], ego_info)
-        center_enc = self.center_encoder(state[:, one_state_dim:2 * one_state_dim], ego_info)
-        right_enc = self.right_encoder(state[:, 2 * one_state_dim:3 * one_state_dim], ego_info)
+        center_enc = self.center_encoder(state[:, one_state_dim:2*one_state_dim], ego_info)
+        right_enc = self.right_encoder(state[:, 2*one_state_dim:3*one_state_dim], ego_info)
         ego_enc = self.ego_encoder(ego_info)
         action_enc = self.action_encoder(action)
         state_ = torch.cat((left_enc, center_enc, right_enc, ego_enc, action_enc), dim=1)
@@ -264,8 +258,8 @@ class QValueNet_multi_td3(torch.nn.Module):
         out = self.fc_out(hidden)
 
         left_enc2 = self.left_encoder2(state[:, :one_state_dim], ego_info)
-        center_enc2 = self.center_encoder2(state[:, one_state_dim:2 * one_state_dim], ego_info)
-        right_enc2 = self.right_encoder2(state[:, 2 * one_state_dim:3 * one_state_dim], ego_info)
+        center_enc2 = self.center_encoder2(state[:, one_state_dim:2*one_state_dim], ego_info)
+        right_enc2 = self.right_encoder2(state[:, 2*one_state_dim:3*one_state_dim], ego_info)
         ego_enc2 = self.ego_encoder2(ego_info)
         action_enc2 = self.action_encoder2(action)
         state_2 = torch.cat((left_enc2, center_enc2, right_enc2, ego_enc2, action_enc2), dim=1)
@@ -276,8 +270,7 @@ class QValueNet_multi_td3(torch.nn.Module):
 
 class P_DQN:
     def __init__(self, state_dim, action_dim, action_bound, gamma, tau, sigma, sigma_steer, sigma_acc, theta, epsilon,
-                 buffer_size, batch_size, actor_lr, critic_lr, clip_grad, zero_index_gradients, inverting_gradients,
-                 per_flag, device) -> None:
+                 buffer_size, batch_size, actor_lr, critic_lr, clip_grad, zero_index_gradients, inverting_gradients, per_flag,device) -> None:
         self.learn_time = 0
         self.replace_a = 0
         self.replace_c = 0
@@ -289,8 +282,7 @@ class P_DQN:
         self.action_parameter_sizes = np.array([self.a_dim, self.a_dim, self.a_dim])
         self.action_parameter_size = int(self.action_parameter_sizes.sum())
         self.action_parameter_offsets = self.action_parameter_sizes.cumsum()
-        self.action_parameter_offsets = np.insert(self.action_parameter_offsets, 0,
-                                                  0)  # [0, self.a_dim, self.a_dim*2, self.a_dim*3]
+        self.action_parameter_offsets = np.insert(self.action_parameter_offsets, 0, 0)  # [0, self.a_dim, self.a_dim*2, self.a_dim*3]
         self.action_parameter_max_numpy = np.array([1, 1, 1, 1, 1, 1])
         self.action_parameter_min_numpy = np.array([-1, -1, -1, -1, -1, -1])
         self.action_parameter_range_numpy = np.array([2, 2, 2, 2, 2, 2])
@@ -305,10 +297,10 @@ class P_DQN:
         self.add_actor_noise = False
         self.td3 = False
         self.policy_freq = 2
-        self.per_flag = per_flag
-        self.learn_time = 0
+        self.per_flag=per_flag
+        self.learn_time=0
         # adjust different types of replay buffer
-        # self.replay_buffer = Split_ReplayBuffer(buffer_size)
+        #self.replay_buffer = Split_ReplayBuffer(buffer_size)
         if not self.per_flag:
             self.replay_buffer = SplitReplayBuffer(buffer_size)
         else:
@@ -323,12 +315,10 @@ class P_DQN:
         self.actor_target.load_state_dict(self.actor.state_dict())
         if not self.td3:
             self.critic = QValueNet_multi(self.s_dim, self.action_parameter_size, self.num_actions).to(self.device)
-            self.critic_target = QValueNet_multi(self.s_dim, self.action_parameter_size, self.num_actions).to(
-                self.device)
+            self.critic_target = QValueNet_multi(self.s_dim, self.action_parameter_size, self.num_actions).to(self.device)
         else:
             self.critic = QValueNet_multi_td3(self.s_dim, self.action_parameter_size, self.num_actions).to(self.device)
-            self.critic_target = QValueNet_multi_td3(self.s_dim, self.action_parameter_size, self.num_actions).to(
-                self.device)
+            self.critic_target = QValueNet_multi_td3(self.s_dim, self.action_parameter_size, self.num_actions).to(self.device)
         # self.actor = PolicyNet(self.s_dim, self.a_bound).to(self.device)
         # self.actor_target = PolicyNet(self.s_dim, self.a_bound).to(self.device)
         # self.actor_target.load_state_dict(self.actor.state_dict())
@@ -358,7 +348,7 @@ class P_DQN:
         state_veh_rear = torch.tensor(state['vehicle_info'][4], dtype=torch.float32).view(1, -1).to(self.device)
         state_veh_right_rear = torch.tensor(state['vehicle_info'][5], dtype=torch.float32).view(1, -1).to(self.device)
         state_light = torch.tensor(state['light'], dtype=torch.float32).view(1, -1).to(self.device)
-        state_ev = torch.tensor(state['ego_vehicle'], dtype=torch.float32).view(1, -1).to(self.device)
+        state_ev = torch.tensor(state['ego_vehicle'],dtype=torch.float32).view(1,-1).to(self.device)
         state_ = torch.cat((state_left_wps, state_veh_left_front, state_veh_left_rear, state_light,
                             state_center_wps, state_veh_front, state_veh_rear, state_light,
                             state_right_wps, state_veh_right_front, state_veh_right_rear, state_light, state_ev), dim=1)
@@ -377,26 +367,20 @@ class P_DQN:
             elif lane_id == -1:
                 q_a[0] = -1000000.0
         action = np.argmax(q_a)
-        action_param = all_action_param[:,
-                       self.action_parameter_offsets[action]:self.action_parameter_offsets[action + 1]]
+        action_param = all_action_param[:, self.action_parameter_offsets[action]:self.action_parameter_offsets[action+1]]
 
         print(f'Network Output - Action: {action}, Steer: {action_param[0][0]}, Throttle_brake: {action_param[0][1]}')
         print('q values: ', q_a)
         if (action_param[0, 0].is_cuda):
-            action_param = np.array(
-                [action_param[:, 0].detach().cpu().numpy(), action_param[:, 1].detach().cpu().numpy()]).reshape((-1, 2))
-            all_action_param = np.array(
-                [all_action_param[:, 0].detach().cpu().numpy(), all_action_param[:, 1].detach().cpu().numpy(),
-                 all_action_param[:, 2].detach().cpu().numpy(), all_action_param[:, 3].detach().cpu().numpy(),
-                 all_action_param[:, 4].detach().cpu().numpy(), all_action_param[:, 5].detach().cpu().numpy()]).reshape(
-                (-1, 6))
+            action_param = np.array([action_param[:, 0].detach().cpu().numpy(), action_param[:, 1].detach().cpu().numpy()]).reshape((-1, 2))
+            all_action_param = np.array([all_action_param[:, 0].detach().cpu().numpy(), all_action_param[:, 1].detach().cpu().numpy(),
+                                        all_action_param[:, 2].detach().cpu().numpy(), all_action_param[:, 3].detach().cpu().numpy(),
+                                        all_action_param[:, 4].detach().cpu().numpy(), all_action_param[:, 5].detach().cpu().numpy()]).reshape((-1, 6))
         else:
-            action_param = np.array([action_param[:, 0].detach().numpy(), action_param[:, 1].detach().numpy()]).reshape(
-                (-1, 2))
-            all_action_param = np.array(
-                [all_action_param[:, 0].detach().numpy(), all_action_param[:, 1].detach().numpy(),
-                 all_action_param[:, 2].detach().numpy(), all_action_param[:, 3].detach().numpy(),
-                 all_action_param[:, 4].detach().numpy(), all_action_param[:, 5].detach().numpy()]).reshape((-1, 6))
+            action_param = np.array([action_param[:, 0].detach().numpy(), action_param[:, 1].detach().numpy()]).reshape((-1, 2))
+            all_action_param = np.array([all_action_param[:, 0].detach().numpy(), all_action_param[:, 1].detach().numpy(),
+                                        all_action_param[:, 2].detach().numpy(), all_action_param[:, 3].detach().numpy(),
+                                        all_action_param[:, 4].detach().numpy(), all_action_param[:, 5].detach().numpy()]).reshape((-1, 6))
         # if np.random.random()<self.epsilon:
         if self.train:
             action_param[:, 0] = np.clip(np.random.normal(action_param[:, 0], self.steer_noise), -1, 1)
@@ -417,7 +401,7 @@ class P_DQN:
         with torch.no_grad():
             ind = torch.zeros(self.action_parameter_size, dtype=torch.long)
             for a in range(self.num_actions):
-                ind[self.action_parameter_offsets[a]:self.action_parameter_offsets[a + 1]] = a
+                ind[self.action_parameter_offsets[a]:self.action_parameter_offsets[a+1]] = a
             # ind_tile = np.tile(ind, (self.batch_size, 1))
             ind_tile = ind.repeat(self.batch_size, 1).to(self.device)
             actual_index = ind_tile != batch_action_indices
@@ -431,7 +415,7 @@ class P_DQN:
             min_p = torch.from_numpy(self.action_parameter_min_numpy)
             rnge = torch.from_numpy(self.action_parameter_range_numpy)
         else:
-            raise ValueError("Unhandled grad_type: '" + str(grad_type) + "'")
+            raise ValueError("Unhandled grad_type: '"+str(grad_type) + "'")
 
         max_p = max_p.cpu()
         min_p = min_p.cpu()
@@ -460,11 +444,10 @@ class P_DQN:
         if not self.per_flag:
             b_s, b_a, b_a_param, b_r, b_ns, b_t, b_d = self.replay_buffer.sample(self.batch_size)
         else:
-            b_idx, b_ISWeights, b_transition = self.replay_buffer.sample(self.batch_size)
-            b_s, b_a, b_a_param, b_r, b_ns, b_t, b_d, b_i = b_transition[0], b_transition[1], b_transition[2], \
-                                                            b_transition[3], b_transition[4], \
-                                                            b_transition[5], b_transition[6], b_transition[7]
-            self.ISWeights = torch.tensor(b_ISWeights, dtype=torch.float32).view((self.batch_size, -1)).to(self.device)
+            b_idx,b_ISWeights,b_transition = self.replay_buffer.sample(self.batch_size)
+            b_s, b_a, b_a_param, b_r, b_ns, b_t, b_d, b_i = b_transition[0], b_transition[1], b_transition[2], b_transition[3], b_transition[4], \
+                b_transition[5], b_transition[6],b_transition[7]
+            self.ISWeights=torch.tensor(b_ISWeights,dtype=torch.float32).view((self.batch_size,-1)).to(self.device)
 
         # 此处得到的batch是否是pytorch.tensor?
         batch_s = torch.tensor(b_s, dtype=torch.float32).view((self.batch_size, -1)).to(self.device)
@@ -494,11 +477,11 @@ class P_DQN:
             if not self.per_flag:
                 loss_q = self.loss(q, q_targets)
             else:
-                loss = self.loss(q, q_targets)
-                abs_loss = torch.abs(q - q_targets)
-                abs_loss = np.array(abs_loss.detach().cpu().numpy())
-                loss_q = torch.mean(loss * self.ISWeights)
-                self.replay_buffer.batch_update(b_idx, abs_loss)
+                loss=self.loss(q,q_targets)
+                abs_loss=torch.abs(q-q_targets)
+                abs_loss=np.array(abs_loss.detach().cpu().numpy())
+                loss_q=torch.mean(loss*self.ISWeights)
+                self.replay_buffer.batch_update(b_idx,abs_loss)
         else:
             q_values1, q_values2 = self.critic(batch_s, batch_a_param)
             q_values = torch.min(q_values1, q_values2)
@@ -571,7 +554,7 @@ class P_DQN:
     def hard_update(self, net, target_net):
         net.load_state_dict(target_net.state_dict())
 
-    def store_transition(self, state, action, action_param, reward, next_state, truncated, done, info):
+    def store_transition(self, state, action, action_param, reward, next_state, truncated, done, info):  
         # how to store the episodic data to buffer
         def _compress(state):
             # print('state: ', state)
@@ -587,13 +570,12 @@ class P_DQN:
             state_ev = np.array(state['ego_vehicle'], dtype=np.float32).reshape((1, -1))
             state_light = np.array(state['light'], dtype=np.float32).reshape((1, -1))
             state_ = np.concatenate((state_left_wps, state_veh_left_front, state_veh_left_rear, state_light,
-                                     state_center_wps, state_veh_front, state_veh_rear, state_light,
-                                     state_right_wps, state_veh_right_front, state_veh_right_rear, state_light,
-                                     state_ev), axis=1)
+                                        state_center_wps, state_veh_front, state_veh_rear, state_light,
+                                        state_right_wps, state_veh_right_front, state_veh_right_rear, state_light, state_ev), axis=1)
             return state_
 
-        state = _compress(state)
-        next_state = _compress(next_state)
+        state=_compress(state)
+        next_state=_compress(next_state)
 
         if not truncated:
             lane_center = info["offlane"]
@@ -608,22 +590,22 @@ class P_DQN:
         #     self.change_buffer.append((state, action, action_param, reward, next_state, truncated, done))
         if not self.per_flag:
             if action == 0 or action == 2:
-                self.replay_buffer.add((state, action, action_param, reward, next_state, truncated, done), False)
-            self.replay_buffer.add((state, action, action_param, reward, next_state, truncated, done), True)
+                self.replay_buffer.add((state, action, action_param, reward, next_state, truncated, done),False)
+            self.replay_buffer.add((state, action, action_param, reward, next_state, truncated, done),True)
         else:
-            self.replay_buffer.add((state, action, action_param, reward, next_state, truncated, done, info))
+            self.replay_buffer.add((state, action, action_param, reward, next_state, truncated, done,info))
         # print("their shapes", state, action, next_state, reward_list, truncated, done)
         # state: [1, 28], action: [1, 2], next_state: [1, 28], reward_list = [1, 6], truncated = [1, 1], done = [1, 1]
         # all: [1, 66]
 
         return
 
-    def save_net(self, file='./out/ddpg_final.pth'):
+    def save_net(self,file='./out/ddpg_final.pth'):
         state = {
             'actor': self.actor.state_dict(),
-            'actor_target': self.actor_target.state_dict(),
+            'actor_target':self.actor_target.state_dict(),
             'critic': self.critic.state_dict(),
-            'critic_target': self.critic_target.state_dict(),
+            'critic_target':self.critic_target.state_dict(),
             'actor_optimizer': self.actor_optimizer.state_dict(),
             'critic_optimizer': self.critic_optimizer.state_dict()
         }

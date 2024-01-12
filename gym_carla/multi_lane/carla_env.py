@@ -1,5 +1,3 @@
-# carla env, including action selection and reward calculation
-
 import time
 import carla
 import random
@@ -15,7 +13,7 @@ from gym_carla.multi_lane.agent.basic_agent import BasicAgent
 from gym_carla.multi_lane.agent.local_planner import LocalPlanner
 from gym_carla.multi_lane.agent.global_planner import GlobalPlanner,RoadOption
 from gym_carla.multi_lane.agent.basic_lanechanging_agent import Basic_Lanechanging_Agent
-from gym_carla.single_lane.navigation.constant_velocity_agent import ConstantVelocityAgent
+# from gym_carla.single_lane.navigation.constant_velocity_agent import ConstantVelocityAgent
 from gym_carla.multi_lane.util.sensor import CollisionSensor, LaneInvasionSensor, SemanticTags
 from gym_carla.multi_lane.util.wrapper import WaypointWrapper,VehicleWrapper,Action,SpeedState,Truncated,ControlInfo,process_veh, \
     process_steer,recover_steer,fill_action_param,ttc_reward,comfort,lane_center_reward,calculate_guide_lane_center,process_lane_wp
@@ -50,7 +48,7 @@ class CarlaEnv:
         self.auto_lanechange = args.auto_lane_change
         self.guide_change = args.guide_change
         self.stride = args.stride
-        self.buffer_size = args.buffer_size
+        self.buffer_size = 160000
         if self.train:
             self.pre_train_steps = args.pre_train_steps
         else:

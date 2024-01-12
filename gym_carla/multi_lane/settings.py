@@ -1,4 +1,3 @@
-# setting parameters, like time duration and detection distance
 """This file defines all high level parameters of carla gym environment"""
 import argparse
 #
@@ -95,15 +94,15 @@ ARGS.add_argument(
 ARGS.add_argument(
     '-n', '--num_of_vehicles', type=list,
     help='Total vehicles number which run in simulation',
-    default=[ 15*3])
+    default=[15*3])
 ARGS.add_argument(
     '-sa', '--sampling_resolution', type=float,
     help='Distance between generated two waypoints',
     default=1.0)
-ARGS.add_argument(
-    '-we', '--weather', type=float,
-    help='weather setting',
-    default=sunlight)
+# ARGS.add_argument(
+#     '-we', '--weather', type=float,
+#     help='weather setting',
+#     default=sunlight)
 ARGS.add_argument(
     '--tm-port',
     metavar='P',
@@ -149,14 +148,14 @@ ARGS.add_argument(
     '--speed threshold', type=float,
     default=0.1,
     help='speed threshold for ego vehicle')
-ARGS.add_argument(
-    '--traffic_light_th', type=float,
-    default=50,
-    help='the detection range of traffic light')
-ARGS.add_argument(
-    '--vehicle_th', type=float,
-    default=70,
-    help='the detection range of conventional vehicles')
+# ARGS.add_argument(
+#     '--traffic_light_th', type=float,
+#     default=50,
+#     help='the detection range of traffic light')
+# ARGS.add_argument(
+#     '--vehicle_th', type=float,
+#     default=70,
+#     help='the detection range of conventional vehicles')
 ARGS.add_argument(
     '--penalty', type=float,
     default=40,
@@ -169,14 +168,14 @@ ARGS.add_argument(
     '--lane_change_reward', type=float,
     default=25,
     help='reward for lane change according to the distance to the preceding vehicle')
-ARGS.add_argument(
-    '--acceleration threshold', type=float,
-    default=3,
-    help='acceleration threshold for ego vehicle')
-ARGS.add_argument(
-    '--speed threshold', type=float,
-    default=0.1,
-    help='speed threshold for ego vehicle')
+# ARGS.add_argument(
+#     '--acceleration threshold', type=float,
+#     default=3,
+#     help='acceleration threshold for ego vehicle')
+# ARGS.add_argument(
+#     '--speed threshold', type=float,
+#     default=0.1,
+#     help='speed threshold for ego vehicle')
 ARGS.add_argument(
     '--speed_limit', type=float,
     default=90.0,
