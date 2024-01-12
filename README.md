@@ -99,11 +99,14 @@ $ conda activate env_name
 $ git clone https://github.com/xiayuyang/AUTO.git
 $ pip install -r requirements.txt
 ```
-4. Train the RL agent in the multi-lane scenario
+
+4. update CARLA_PATH to your path in gym_carla/setting.py:
+
+5. Train the RL agent in the multi-lane scenario
 ```shell
 $ python ./main/trainer/pdqn_multi_lane.py
 ```
-5. Test the RL agent in the multi-lane scenario
+6. Test the RL agent in the multi-lane scenario
 ```shell
 $ python ./main/tester/multi_lane_test.py
 ```
