@@ -1,4 +1,4 @@
-# AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving
+# AUTO : A Parameterized Decision-making Framework with Multi-modality Perception for Autonomous Driving
 
 ![image](/figures/framework.png)
 
@@ -6,7 +6,7 @@ This repo is the implementation of the following paper:
 
 [论文](https://arxiv.org/abs/2312.11935)
 
-**AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving**  
+**AUTO : A Parameterized Decision-making Framework with Multi-modality Perception for Autonomous Driving**  
 
 The figure shows the architecture of our framework, which consists of five components: data preprocessing, state representation, actorcritic,
 hybrid reward function, and multi-worker training. For the data preprocessing,we first take the data from HD maps and multiple
@@ -99,25 +99,18 @@ $ pip install -r requirements.txt
 ```
 4. Train the RL agent in the multi-lane scenario
 ```shell
-$ python ./main/trainer/pdqn_multi_process.py
+$ python ./main/trainer/pdqn_multi_lane.py
 ```
 5. Test the RL agent in the multi-lane scenario
 ```shell
 $ python ./main/tester/multi_lane_test.py
 ```
 
-## Training performance
-![image](/figures/curve1.png)
-![image](/figures/curve2.png)
-## a video example
 
 <img src="./figures/Lane_change.gif" width=500>
 
 
-## some route examples
 
-<img src="./figures/Highway_route.png" width=400>
-<img src="./figures/Urban_route_3.png" width=400>
 
 ## Reference
 
