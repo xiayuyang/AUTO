@@ -1,45 +1,39 @@
-# AUTO : Parameterized Decision-making with Multi-modality Perception for Autonomous Driving
+# AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving
 
-![image](/figures/frame.PNG)
+![image](/figures/framework.png)
 
 This repo is the implementation of the following paper:
 
-**AUTO : Parameterized Decision-making with Multi-modality Perception for Autonomous Driving**  
+**AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving**  
 [论文](https://arxiv.org/abs/2312.11935)
-
-This figure shows the architecture of our framework, which consists of five components: data preprocessing, 
-state representation, parameterized action calculation, hybrid reward function, and multi-worker training. 
-For the data preprocessing, we take the data from HD maps and multiple sensors (i.e.,
-Camera, LiDAR, GNSS, and IMU) as input, based on which we respectively extract the feature vectors of lane waypoints,
-vehicles, and traffic lights and generate a multi-modality state for the agent. For the state representation, we propose
-a lane-wised cross attention model (LCA) to learn a latent representation of the state. 
-It organizes as multiple agent-centric star graphs and uses a GRU network to embed the node features. 
-Then, it uses a cross attention mechanism to aggregate each star graph and introduces a lane-wise paradigm
-to fuse these aggregated results as a state representation. For the parameterized action calculation, we first integrate LCA
-into an actor network and a critic network, respectively. Then, we compute an action using a parameterized action structure
-that first decides whether to perform a lane-changing decision (high level) and then compute an exact action to execute (low
-level). For the hybrid reward function, we calculate a reward value for the action and state
-, which serves as a signal to guide the agent to learn an optimal action policy. For the multi-worker training, we use a regularization
-technique to improve the convergence performance of our reinforcement learning model RBP-DQN and speed up the
-training speed using distributed computation following the previous studies.
+The figure shows the architecture of our framework, which consists of five components: data preprocessing, state representation, actorcritic,
+hybrid reward function, and multi-worker training. For the data preprocessing,we first take the data from HD maps and multiple
+sensors (i.e., Camera, LiDAR, GNSS, and IMU) as input, based on which we respectively extract the feature vectors of lanes, vehicles,
+and traffic lights from it and finally generate a multi-modality state for the agent. For the state representation,we propose a lane-wised
+cross attention model (LCA) to learn a latent representation of the state features. It organizes as multiple agent-centric star graphs
+and applies cross attention to aggregate multi-modality features on each lane. Then, the aggregated results of each lane are fused as a
+state representation. For the actor-critic, we first introduce LCA for the actor and critic, respectively. Then, we compute an action 𝑎𝑡
+using a hierarchical action structure that first decides whether to perform a lane-changing decision (high level) and then compute an
+exact action to execute (low level). For the hybrid reward function, we calculate a reward value for action and state, which
+serves as a signal to guide the agent to learn an optimal action policy. For the multi-worker training, we speed up the training of actorcritic
+and improve the convergence performance using distributed computation.
 <br> 
 
 <br> 
 
 ## Code Structure
-The core code is in RBP-DQN and carla_env.
 - algs<br>
-    - RBP-DQN.py*<br>
+    - pdqn<br>
        Implementaion for our reinforcement learning algorithm, including lane-wised cross attention model (LCA), 
        actor-critic model and hierarchical action. Class "lane_wise_cross_attention_encoder" is the LCA network,
        Class "PolicyNet_multi" is the actor network, Class "QValueNet_multi" is the critic network.
-       Class RBP_DQN includes a whole workflow of reinforcement learning, including action section, gradient update, Q regularization.
-    - replay_buffer.py<br>
+       Class P_DQN includes a whole workflow of reinforcement learning, including action section and gradient update.
+    - replay_buffer<br>
        relay buffer of our reinforcement learning, which is used to store experiences and sample experiences.  
        
 - gym_carla<br>
 Gym-like carla environment for vehicle agent controlled by reinforcement learning.
-    - carla_env.py*<br>
+    - carla_env.py<br>
     Main module for Gym-like Carla environment, which shares the same APIs as classical [Gym](https://gymnasium.farama.org/).
     Function "reset" is an initialization at the beginning of an episode and Function "step" includes state generation and reward calculation.
     - settings.py<br>
@@ -82,7 +76,7 @@ Gym-like carla environment for vehicle agent controlled by reinforcement learnin
     - tester<br>
     Code for testing our reinforcement learning model.
     - trainer<br>
-    Code for training our reinforcement learning model. pdqn_multi_process.py uses multi process to train our framework.   
+    Code for training our reinforcement learning model.  
     - process.py<br>
     Two functions that are used to start a process or kill a process. 
 
@@ -111,24 +105,19 @@ $ python ./main/tester/multi_lane_test.py
 ```
 
 ## Training performance
-![image](/figures/curve.PNG)
-## scenario example
-
-(bird-eye)
+![image](/figures/curve1.png)
+![image](/figures/curve2.png)
+## a video example
 
 <img src="./figures/Lane_change.gif" width=500>
 
-(driving)
 
-<img src="./figures/driving.png" width=500>
+## some route examples
 
+<img src="./figures/Highway_route.png" width=400>
+<img src="./figures/Urban_route_3.png" width=400>
 
-## route examples
-
-<img src="./figures/route.PNG" width=500>
-
-
-
+## Reference
 
 
 ## License
@@ -137,5 +126,5 @@ All code within this repository is under [Apache License 2.0](https://www.apache
 ## Acknowledgements
 Our code is based on several repositories:
 - [gym-carla](https://github.com/cjy1992/gym-carla.git)
-- [TransFuser](https://github.com/autonomousvision/transfuser)
+- [CARLA_Leaderboard](https://github.com/RobeSafe-UAH/CARLA_Leaderboard.git)
 - [MP-DQN](https://github.com/cycraig/MP-DQN.git)
