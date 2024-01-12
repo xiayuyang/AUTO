@@ -24,6 +24,8 @@ and improve the convergence performance using distributed computation.
 <br> 
 
 ## Code Structure
+In order to reduce the required computing resources, this code directly uses the function in carla to obtain environmental features instead of using sensors.
+
 - algs<br>
     - pdqn<br>
        Implementaion for our reinforcement learning algorithm, including lane-wised cross attention model (LCA), 
@@ -37,7 +39,7 @@ and improve the convergence performance using distributed computation.
 Gym-like carla environment for vehicle agent controlled by reinforcement learning.
     - carla_env.py<br>
     Main module for Gym-like Carla environment, which shares the same APIs as classical [Gym](https://gymnasium.farama.org/).
-    Function "reset" is an initialization at the beginning of an episode and Function "step" includes state generation and reward calculation.
+    Function "reset" is an initialization at the beginning of an episode and Function "step" includes state generation and reward calculation. 
     - settings.py<br>
     This module contains environment parameter list for carla_env. For example,  
     the detection range $D_{tl}$ of traffic lights by the camera: $50𝑚$,  
