@@ -3,9 +3,9 @@
 ![image](/figures/framework.png)
 
 This repo is the implementation of the following paper:
-
-**AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving**  
 [论文](https://arxiv.org/abs/2312.11935)
+**AUTO : A Hierarchical Decision-making Framework with Multi-modality Perception for Autonomous Driving**  
+
 The figure shows the architecture of our framework, which consists of five components: data preprocessing, state representation, actorcritic,
 hybrid reward function, and multi-worker training. For the data preprocessing,we first take the data from HD maps and multiple
 sensors (i.e., Camera, LiDAR, GNSS, and IMU) as input, based on which we respectively extract the feature vectors of lanes, vehicles,
