@@ -5,7 +5,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from enum import Enum
 from gym_carla.multi_lane.settings import ROADS, STRAIGHT, CURVE, JUNCTION, DOUBLE_DIRECTION, DISTURB_ROADS
-from gym_carla.multi_lane.util.misc import test_waypoint,vector
+from gym_carla.multi_lane.util.misc import vector
 #
 class RoadOption(Enum):
     """
@@ -20,6 +20,10 @@ class RoadOption(Enum):
     CHANGELANELEFT = 5
     CHANGELANERIGHT = 6
 
+def test_waypoint(wp):
+    """Attention: the test_waypoint here should be different from test_waypoint function in misc.py
+        or it could cause endless loop in GlobalPlanner._build_route()"""
+    return wp.road_id in STRAIGHT or wp.road_id in CURVE or wp.road_id in JUNCTION
 
 class GlobalPlanner:
     """
